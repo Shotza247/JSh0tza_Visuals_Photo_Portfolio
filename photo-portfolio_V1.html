@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photography Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #fafaf8;
+            color: #1a1a1a;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            padding: 5rem 2rem;
+            text-align: left;
+            overflow: hidden;
+            border-bottom: 1px solid #e0dfd8;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: radial-gradient(circle at 30% 50%, rgba(140, 130, 115, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 2rem;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .auth-btn {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid #1a1a1a;
+            background: transparent;
+            color: #1a1a1a;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .auth-btn:hover {
+            background: #f5f5f2;
+            transform: translateY(-2px);
+        }
+
+        .auth-btn.signup {
+            background: #1a1a1a;
+            color: #ffffff;
+            border-color: #1a1a1a;
+        }
+
+        .auth-btn.signup:hover {
+            background: #333333;
+            border-color: #333333;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #1a1a1a;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: #52524a;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+            max-width: 600px;
+        }
+
+        .hero-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #8a8a82;
+            font-size: 0.95rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+        }
+
+        .divider {
+            width: 1px;
+            height: 1.5rem;
+            background: #8a8a82;
+            opacity: 0.4;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: #f5f5f2;
+            border-radius: 50%;
+            text-decoration: none;
+            color: #1a1a1a;
+            transition: all 0.3s ease;
+            border: 1px solid #e0dfd8;
+            font-size: 1.2rem;
+        }
+
+        .social-link:hover {
+            background: #1a1a1a;
+            color: #ffffff;
+            border-color: #1a1a1a;
+            transform: translateY(-3px);
+        }
+
+        /* Filters Section */
+        .filters-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            background: rgba(250, 250, 248, 0.85);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 2rem 0;
+        }
+
+        .filters-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .filters-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .filter-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #52524a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: #ffffff;
+            color: #52524a;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid #e0dfd8;
+        }
+
+        .filter-btn:hover {
+            background: #f5f5f2;
+            border-color: #8a8a82;
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: #1a1a1a;
+            color: #ffffff;
+            border: none;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Gallery */
+        .gallery-section {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+            border-radius: 1.5rem;
+            background: #e8e8e4;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.4), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2rem;
+        }
+
+        .gallery-item:hover .gallery-item-overlay {
+            opacity: 1;
+        }
+
+        .gallery-item-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gallery-item-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #ffffff;
+        }
+
+        .gallery-item-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .gallery-item-category {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            width: fit-content;
+            color: #ffffff;
+        }
+
+        .gallery-item-date {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .gallery-item-actions {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            color: #ffffff;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .action-btn.loved {
+            color: #d0403a;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            background: #ffffff;
+            border-radius: 1.5rem;
+            max-width: 90vw;
+            max-height: 95vh;
+            overflow: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: #f5f5f2;
+            border: none;
+            color: #1a1a1a;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-close:hover {
+            background: #e8e8e4;
+            transform: scale(1.1);
+        }
+
+        .lightbox-image {
+            width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+        }
+
+        .lightbox-info {
+            padding: 3rem;
+        }
+
+        .lightbox-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+
+        .lightbox-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .lightbox-category {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #f5f5f2;
+            border: 1px solid #e0dfd8;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: #52524a;
+        }
+
+        .lightbox-actions {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e0dfd8;
+        }
+
+        .action-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .action-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #52524a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .star {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 2rem;
+            transition: all 0.2s ease;
+            color: #d0ccc4;
+        }
+
+        .star:hover,
+        .star.active {
+            color: #8a8a82;
+            transform: scale(1.2);
+        }
+
+        .rating-value {
+            margin-left: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #8a8a82;
+        }
+
+        .love-btn {
+            background: none;
+            border: 1px solid #e0dfd8;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            color: #52524a;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .love-btn:hover {
+            border-color: #8a8a82;
+        }
+
+        .love-btn.loved {
+            background: #f5f5f2;
+            color: #d0403a;
+            border-color: #d0403a;
+        }
+
+        .comments-section {
+            margin-top: 2rem;
+        }
+
+        .comments-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+
+        .comment-input {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .comment-input input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e0dfd8;
+            border-radius: 0.5rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .comment-input input:focus {
+            outline: none;
+            border-color: #8a8a82;
+            box-shadow: 0 0 0 3px rgba(138, 138, 130, 0.1);
+        }
+
+        .comment-btn {
+            padding: 0.75rem 1.5rem;
+            background: #1a1a1a;
+            color: #ffffff;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .comment-btn:hover {
+            background: #333333;
+        }
+
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .comment {
+            padding: 1rem;
+            background: #f5f5f2;
+            border-radius: 0.5rem;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 0.95rem;
+        }
+
+        .comment-text {
+            color: #52524a;
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        /* Blog Section */
+        .blog-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f2 100%);
+            padding: 5rem 2rem;
+            border-top: 1px solid #e0dfd8;
+        }
+
+        .blog-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .blog-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .blog-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
+        .blog-header p {
+            font-size: 1.2rem;
+            color: #52524a;
+            font-weight: 300;
+        }
+
+        .blog-filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .blog-filter-btn {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid #e0dfd8;
+            background: #ffffff;
+            color: #52524a;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .blog-filter-btn:hover {
+            border-color: #8a8a82;
+            background: #f5f5f2;
+            transform: translateY(-2px);
+        }
+
+        .blog-filter-btn.active {
+            background: #1a1a1a;
+            color: #ffffff;
+            border-color: #1a1a1a;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2.5rem;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .blog-card {
+            background: #ffffff;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #e0dfd8;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: #8a8a82;
+        }
+
+        .blog-card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #e8e8e4;
+        }
+
+        .blog-card-content {
+            padding: 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .blog-card-category {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: #f5f5f2;
+            color: #52524a;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .blog-card-date {
+            color: #8a8a82;
+            font-weight: 500;
+        }
+
+        .blog-card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .blog-card-excerpt {
+            color: #52524a;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: auto;
+            flex: 1;
+        }
+
+        .blog-card-footer {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e0dfd8;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #8a8a82;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .read-more {
+            color: #1a1a1a;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .read-more:hover {
+            color: #52524a;
+        }
+
+        /* Blog Modal */
+        .blog-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .blog-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            border-radius: 1.5rem;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: #f5f5f2;
+            border: none;
+            color: #1a1a1a;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: #e8e8e4;
+            transform: scale(1.1);
+        }
+
+        .modal-header {
+            padding: 2rem 3rem 1rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #e0dfd8;
+        }
+
+        .modal-category {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            background: #f5f5f2;
+            color: #52524a;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-date {
+            color: #8a8a82;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .modal-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            padding: 2rem 3rem 0;
+            line-height: 1.3;
+        }
+
+        .modal-body {
+            padding: 2rem 3rem;
+            color: #1a1a1a;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .modal-body p {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-body h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem 0;
+            color: #1a1a1a;
+        }
+
+        .modal-body ul {
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-body li {
+            margin-bottom: 0.75rem;
+        }
+        .footer {
+            border-top: 1px solid #e0dfd8;
+            margin-top: 5rem;
+            padding: 3rem 2rem;
+            text-align: center;
+            color: #8a8a82;
+        }
+
+        .footer p {
+            font-weight: 300;
+            margin: 0.5rem 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .hero-actions {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            .social-links {
+                flex: 1;
+                min-width: 200px;
+            }
+
+            .auth-btn {
+                flex: 1;
+                min-width: 120px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .lightbox-info {
+                padding: 2rem;
+            }
+
+            .lightbox-title {
+                font-size: 1.5rem;
+            }
+
+            .filters-group {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .blog-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                max-height: 95vh;
+            }
+
+            .modal-header,
+            .modal-title,
+            .modal-body {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+
+            .modal-title {
+                font-size: 1.6rem;
+            }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Visual Stories</h1>
+                <p>Capturing moments through landscape, street, and nature photography</p>
+                <div class="hero-meta">
+                    <span>Portfolio 2024</span>
+                    <div class="divider"></div>
+                    <span>Long Exposure • Macro • Street</span>
+                </div>
+            </div>
+            <div class="hero-actions">
+                <div class="social-links">
+                    <a href="https://instagram.com" class="social-link" title="Instagram" target="_blank">📷</a>
+                    <a href="https://twitter.com" class="social-link" title="Twitter" target="_blank">𝕏</a>
+                    <a href="https://facebook.com" class="social-link" title="Facebook" target="_blank">f</a>
+                    <a href="mailto:hello@example.com" class="social-link" title="Email">✉</a>
+                </div>
+                <button class="auth-btn" onclick="handleSignIn()">Sign In</button>
+                <button class="auth-btn signup" onclick="handleSignUp()">Sign Up</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filters -->
+    <div class="filters-wrapper">
+        <div class="filters-container">
+            <div class="filters-group">
+                <!-- Category Filters -->
+                <div class="filter-section" id="categoryFiltersSection"></div>
+                
+                <!-- Date Filters -->
+                <div class="filter-section">
+                    <span class="filter-label">Date</span>
+                    <select id="monthFilter" class="filter-btn" style="border-radius: 0.5rem; padding: 0.5rem 1rem;">
+                        <option value="">All Months</option>
+                    </select>
+                    <select id="yearFilter" class="filter-btn" style="border-radius: 0.5rem; padding: 0.5rem 1rem;">
+                        <option value="">All Years</option>
+                    </select>
+                </div>
+
+                <!-- Place Filters -->
+                <div class="filter-section">
+                    <span class="filter-label">Place</span>
+                    <div id="placeFiltersSection"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery -->
+    <section class="gallery-section">
+        <div class="gallery" id="gallery"></div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="blog-section">
+        <div class="blog-container">
+            <div class="blog-header">
+                <h2>Stories & Updates</h2>
+                <p>Follow my journey through travels, projects, and photography insights</p>
+            </div>
+
+            <div class="blog-filters" id="blogFiltersSection"></div>
+
+            <div class="blog-grid" id="blogGrid"></div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" onclick="closeLightbox()">×</button>
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <img id="lightboxImage" class="lightbox-image" src="" alt="">
+            <div class="lightbox-info">
+                <h2 class="lightbox-title" id="lightboxTitle"></h2>
+                <div class="lightbox-meta">
+                    <span class="lightbox-category" id="lightboxCategory"></span>
+                    <span class="lightbox-category" id="lightboxDate"></span>
+                    <span class="lightbox-category" id="lightboxPlace"></span>
+                </div>
+
+                <div class="lightbox-actions">
+                    <div class="action-group">
+                        <label>Rate</label>
+                        <div class="rating-stars" id="ratingStars"></div>
+                    </div>
+                    <button class="love-btn" id="loveBtn" onclick="toggleLove()">♡ Add to Favorites</button>
+                </div>
+
+                <div class="comments-section">
+                    <div class="comments-title">Comments</div>
+                    <div class="comment-input">
+                        <input type="text" id="commentInput" placeholder="Add a comment..." />
+                        <button class="comment-btn" onclick="addComment()">Post</button>
+                    </div>
+                    <div class="comments-list" id="commentsList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blog Post Modal -->
+    <div class="blog-modal" id="blogModal">
+        <button class="modal-close" onclick="closeBlogModal()">×</button>
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="modal-category" id="modalCategory"></span>
+                <span class="modal-date" id="modalDate"></span>
+            </div>
+            <h2 id="modalTitle" class="modal-title"></h2>
+            <div id="modalContent" class="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2024 Photography Portfolio</p>
+        <p>Capturing the world one frame at a time</p>
+    </footer>
+
+    <script>
+        const photos = [
+            { id: 1, category: 'landscape', title: 'Alpine Serenity', url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=900&fit=crop', date: '2024-01', place: 'Swiss Alps' },
+            { id: 2, category: 'street', title: 'Morning Commute', url: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&h=900&fit=crop', date: '2024-02', place: 'New York' },
+            { id: 3, category: 'longexposure', title: 'City Light Symphony', url: 'https://images.unsplash.com/photo-1511379938547-c1f69b13d835?w=1200&h=900&fit=crop', date: '2024-01', place: 'Tokyo' },
+            { id: 4, category: 'nature', title: 'Golden Hour Wildlife', url: 'https://images.unsplash.com/photo-1474511320723-9a56873867b5?w=1200&h=900&fit=crop', date: '2024-03', place: 'Serengeti' },
+            { id: 5, category: 'closeup', title: 'Dewdrop Dreams', url: 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1200&h=900&fit=crop', date: '2024-02', place: 'Garden' },
+            { id: 6, category: 'landscape', title: 'Coastal Serenity', url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&h=900&fit=crop', date: '2024-03', place: 'Bali' },
+            { id: 7, category: 'street', title: 'Urban Geometry', url: 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=1200&h=900&fit=crop', date: '2024-01', place: 'Berlin' },
+            { id: 8, category: 'longexposure', title: 'Celestial Canvas', url: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1200&h=900&fit=crop', date: '2024-04', place: 'Iceland' },
+            { id: 9, category: 'nature', title: 'Forest Whispers', url: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&h=900&fit=crop', date: '2024-02', place: 'Black Forest' },
+            { id: 10, category: 'closeup', title: 'Macro Brilliance', url: 'https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=1200&h=900&fit=crop', date: '2024-04', place: 'Studio' },
+            { id: 11, category: 'landscape', title: 'Desert Tranquility', url: 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=1200&h=900&fit=crop', date: '2024-03', place: 'Sahara' },
+            { id: 12, category: 'street', title: 'Neon Nights', url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=1200&h=900&fit=crop', date: '2024-04', place: 'Hong Kong' }
+        ];
+
+        const categories = ['landscape', 'longexposure', 'closeup', 'nature', 'street'];
+        const categoryLabels = {
+            landscape: 'Landscape',
+            longexposure: 'Long Exposure',
+            closeup: 'Close-ups',
+            nature: 'Nature',
+            street: 'Street'
+        };
+
+        let currentFilters = {
+            category: '',
+            month: '',
+            year: '',
+            place: ''
+        };
+
+        let ratings = {};
+        let favorites = {};
+        let comments = {};
+        let currentPhotoId = null;
+
+        function getUniquePlaces() {
+            return [...new Set(photos.map(p => p.place))].sort();
+        }
+
+        function getUniqueMonths() {
+            return [...new Set(photos.map(p => p.date.split('-')[1]))].sort();
+        }
+
+        function getUniqueYears() {
+            return [...new Set(photos.map(p => p.date.split('-')[0]))].sort();
+        }
+
+        function initFilters() {
+            // Category filters
+            const categorySection = document.getElementById('categoryFiltersSection');
+            const allBtn = document.createElement('button');
+            allBtn.className = 'filter-btn active';
+            allBtn.textContent = 'All Work';
+            allBtn.onclick = () => setFilter('category', '');
+            categorySection.appendChild(allBtn);
+
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.textContent = categoryLabels[cat];
+                btn.onclick = () => setFilter('category', cat);
+                categorySection.appendChild(btn);
+            });
+
+            // Month filter
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            const monthFilter = document.getElementById('monthFilter');
+            getUniqueMonths().forEach(m => {
+                const option = document.createElement('option');
+                option.value = m;
+                option.textContent = months[parseInt(m) - 1];
+                monthFilter.appendChild(option);
+            });
+            monthFilter.onchange = (e) => setFilter('month', e.target.value);
+
+            // Year filter
+            const yearFilter = document.getElementById('yearFilter');
+            getUniqueYears().forEach(y => {
+                const option = document.createElement('option');
+                option.value = y;
+                option.textContent = y;
+                yearFilter.appendChild(option);
+            });
+            yearFilter.onchange = (e) => setFilter('year', e.target.value);
+
+            // Place filters
+            const placeSection = document.getElementById('placeFiltersSection');
+            getUniquePlaces().forEach(place => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.textContent = place;
+                btn.onclick = () => setFilter('place', place);
+                placeSection.appendChild(btn);
+            });
+        }
+
+        function setFilter(filterType, value) {
+            if (filterType === 'category') {
+                currentFilters[filterType] = value;
+                document.querySelectorAll('#categoryFiltersSection .filter-btn').forEach((btn, i) => {
+                    btn.classList.toggle('active', (i === 0 && !value) || (i > 0 && categories[i-1] === value));
+                });
+            } else if (filterType === 'place') {
+                // Toggle place filter
+                currentFilters[filterType] = currentFilters[filterType] === value ? '' : value;
+                document.querySelectorAll('#placeFiltersSection .filter-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.textContent === currentFilters.place);
+                });
+            } else {
+                currentFilters[filterType] = value;
+            }
+
+            renderGallery();
+        }
+
+        function renderGallery() {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = '';
+            
+            const filtered = photos.filter(p => {
+                if (currentFilters.category && p.category !== currentFilters.category) return false;
+                if (currentFilters.month && !p.date.includes(currentFilters.month)) return false;
+                if (currentFilters.year && !p.date.includes(currentFilters.year)) return false;
+                if (currentFilters.place && p.place !== currentFilters.place) return false;
+                return true;
+            });
+
+            filtered.forEach((photo, index) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.style.animation = `fadeIn 0.6s ease-out ${index * 0.1}s both`;
+                
+                const month = new Date(photo.date + '-01').toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+                const isFavorited = favorites[photo.id];
+
+                item.innerHTML = `
+                    <img src="${photo.url}" alt="${photo.title}" onclick="openLightbox(${photo.id})">
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-item-info">
+                            <div class="gallery-item-title">${photo.title}</div>
+                            <div class="gallery-item-meta">
+                                <span class="gallery-item-category">${categoryLabels[photo.category]}</span>
+                                <span class="gallery-item-date">${month} • ${photo.place}</span>
+                            </div>
+                        </div>
+                        <div class="gallery-item-actions">
+                            <button class="action-btn ${isFavorited ? 'loved' : ''}" onclick="toggleFavorite(event, ${photo.id})">♡ ${isFavorited ? 'Favorited' : 'Favorite'}</button>
+                            ${ratings[photo.id] ? `<span class="action-btn">★ ${ratings[photo.id]}/5</span>` : ''}
+                        </div>
+                    </div>
+                `;
+                gallery.appendChild(item);
+            });
+        }
+
+        function openLightbox(photoId) {
+            currentPhotoId = photoId;
+            const photo = photos.find(p => p.id === photoId);
+            const month = new Date(photo.date + '-01').toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+            
+            document.getElementById('lightboxImage').src = photo.url;
+            document.getElementById('lightboxTitle').textContent = photo.title;
+            document.getElementById('lightboxCategory').textContent = categoryLabels[photo.category];
+            document.getElementById('lightboxDate').textContent = month;
+            document.getElementById('lightboxPlace').textContent = photo.place;
+            
+            // Render stars
+            const starsContainer = document.getElementById('ratingStars');
+            starsContainer.innerHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                const star = document.createElement('button');
+                star.className = 'star';
+                star.textContent = '★';
+                if (i <= (ratings[photoId] || 0)) star.classList.add('active');
+                star.onclick = () => setRating(photoId, i);
+                starsContainer.appendChild(star);
+            }
+
+            const ratingValue = document.createElement('span');
+            ratingValue.className = 'rating-value';
+            if (ratings[photoId]) ratingValue.textContent = `${ratings[photoId]} / 5`;
+            starsContainer.appendChild(ratingValue);
+
+            // Update love button
+            const loveBtn = document.getElementById('loveBtn');
+            loveBtn.className = favorites[photoId] ? 'love-btn loved' : 'love-btn';
+            loveBtn.textContent = favorites[photoId] ? '♥ Favorite' : '♡ Add to Favorites';
+
+            // Render comments
+            renderComments(photoId);
+
+            document.getElementById('lightbox').classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            currentPhotoId = null;
+        }
+
+        function setRating(photoId, rating) {
+            ratings[photoId] = rating;
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+            const ratingValue = document.querySelector('.rating-value');
+            ratingValue.textContent = `${rating} / 5`;
+            renderGallery();
+        }
+
+        function toggleFavorite(event, photoId) {
+            event.stopPropagation();
+            favorites[photoId] = !favorites[photoId];
+            renderGallery();
+        }
+
+        function toggleLove() {
+            if (currentPhotoId) {
+                favorites[currentPhotoId] = !favorites[currentPhotoId];
+                const loveBtn = document.getElementById('loveBtn');
+                loveBtn.className = favorites[currentPhotoId] ? 'love-btn loved' : 'love-btn';
+                loveBtn.textContent = favorites[currentPhotoId] ? '♥ Favorite' : '♡ Add to Favorites';
+                renderGallery();
+            }
+        }
+
+        function addComment() {
+            const input = document.getElementById('commentInput');
+            if (!input.value.trim() || !currentPhotoId) return;
+
+            if (!comments[currentPhotoId]) comments[currentPhotoId] = [];
+            comments[currentPhotoId].push({
+                author: 'You',
+                text: input.value
+            });
+
+            input.value = '';
+            renderComments(currentPhotoId);
+        }
+
+        function renderComments(photoId) {
+            const list = document.getElementById('commentsList');
+            list.innerHTML = '';
+            
+            const photoComments = comments[photoId] || [];
+            photoComments.forEach(comment => {
+                const div = document.createElement('div');
+                div.className = 'comment';
+                div.innerHTML = `<div class="comment-author">${comment.author}</div><div class="comment-text">${comment.text}</div>`;
+                list.appendChild(div);
+            });
+        }
+
+        document.getElementById('lightbox').onclick = closeLightbox;
+
+        // Authentication functions
+        function handleSignIn() {
+            alert('Sign In functionality - Connect to your auth service here');
+            // You can replace this with actual sign-in logic
+        }
+
+        function handleSignUp() {
+            alert('Sign Up functionality - Connect to your auth service here');
+            // You can replace this with actual sign-up logic
+        }
+
+        // Initialize
+        initFilters();
+        renderGallery();
+    </script>
+</body>
+</html>
